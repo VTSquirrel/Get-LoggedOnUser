@@ -4,7 +4,7 @@
      (
          [Parameter()]
          [ValidateNotNullOrEmpty()]
-         [string]$ComputerName = $env:COMPUTERNAME,
+         [string[]]$ComputerName = $env:COMPUTERNAME,
          [boolean] $OutputToHost = $false
      )
      $Result = New-Object System.Collections.Generic.List[System.Object]
