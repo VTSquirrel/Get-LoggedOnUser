@@ -1,4 +1,4 @@
-﻿Function Get-LoggedOnUser{
+Function Get-LoggedOnUser{
      [CmdletBinding()]
      param
      (
@@ -9,21 +9,40 @@
      )
      $Result = New-Object System.Collections.Generic.List[System.Object]
 
+     $Count = 1
      foreach ($comp in $ComputerName){
+        if ($OutputToHost){Write-Host "Checking $comp ($Count of $($ComputerName.Count))... " -NoNewline}
+        
         if(Test-Connection $comp -Quiet -Count 1){
-            $Result.Add([PSCustomObject]@{
-                Computer = $comp
-                User = (Get-WmiObject -Class win32_computersystem -ComputerName $comp).UserName
-            })
+            if ($OutputToHost){
+                Write-Host "Online" -ForegroundColor Green
+                Write-Host "`tGetting logged on user... " -NoNewline
+            }
+
+            try{
+                $Result.Add([PSCustomObject]@{
+                    Computer = $comp
+                    User = (Get-WmiObject -Class win32_computersystem -ComputerName $comp -ErrorAction Stop).UserName
+                })
+            }catch{
+                Write-Host "Failed" -ForegroundColor Red
+                $Result.Add([PSCustomObject]@{
+                    Computer = $comp
+                    User = "Failed to Retrieve User"
+                })
+            }
+
+            if ($OutputToHost){Write-Host "Done" -ForegroundColor Green}
         }else{
             $Result.Add([PSCustomObject]@{
                 Computer = $comp
                 User = "Unable to Connect"
             })
             if ($OutputToHost){
-                Write-Host "Unable to establish remote connection to $comp" -ForegroundColor Red
+                Write-Host "Offline" -ForegroundColor Red
             }
         }
+        $Count++
      }
      
      if ($OutputToHost){
