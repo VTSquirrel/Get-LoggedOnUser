@@ -24,6 +24,7 @@ Function Get-LoggedOnUser{
                     Computer = $comp
                     User = (Get-WmiObject -Class win32_computersystem -ComputerName $comp -ErrorAction Stop).UserName
                 })
+                if ($OutputToHost){Write-Host "Done" -ForegroundColor Green}
             }catch{
                 Write-Host "Failed" -ForegroundColor Red
                 $Result.Add([PSCustomObject]@{
@@ -31,8 +32,6 @@ Function Get-LoggedOnUser{
                     User = "Failed to Retrieve User"
                 })
             }
-
-            if ($OutputToHost){Write-Host "Done" -ForegroundColor Green}
         }else{
             $Result.Add([PSCustomObject]@{
                 Computer = $comp
