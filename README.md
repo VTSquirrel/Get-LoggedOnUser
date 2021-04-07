@@ -3,7 +3,7 @@ Get the username of the user currently logged in to target computer(s)
 
 ## Usage
 ```
-Import-Module .\Get-LastLoggedOnUser.ps1
+Import-Module .\Get-LoggedOnUser.ps1
 
 Get-LoggedOnUser -ComputerName DEVICE_NAME
 
