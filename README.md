@@ -1,5 +1,5 @@
-# Get-LastLoggedOnUser
-Get the username of the user currently logged in to a target computer
+# Get-LoggedOnUser
+Get the username of the user currently logged in to target computer(s)
 
 ## Usage
 ```
